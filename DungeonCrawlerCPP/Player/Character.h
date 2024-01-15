@@ -1,20 +1,14 @@
 #pragma once
 #include <string>
+#include "../Battler.h"
 
-class Character
+class Character : public Battler
 {
-	//I'll leave these data set here for simplicity. 
-	// Maybe I'll implement JSON serialization later.
-	private:
-		std::string _name = "";
-		int _health = 50;
-		int _damage = 5;
+public:
+	Character(std::string name, int health, int damage, int speed);
 
-	public: 
-		Character(std::string name);
-
-		std::string GetPlayerName();
-		int GetHealth();
-		int GetPlayerDamage();
+    bool operator==(const Battler& other) const override {
+        return dynamic_cast<const Character*>(&other) != nullptr;
+    }
 };
 

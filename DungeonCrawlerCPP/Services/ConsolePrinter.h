@@ -10,5 +10,5 @@ public:
     static void PrintError(const std::string message);
     static void PrintWarning(const std::string message);
     static void JumpLines(int linesToJump = 1);
-    static void SeparatedSpace(int size);
+    static void PrintBorder(int size = 1);
 };

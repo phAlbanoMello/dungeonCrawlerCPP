@@ -11,7 +11,6 @@ int InputValidator::GetValidIntInputWithinRange(int minRange, int maxRange) {
             }
             else {
                 std::cout << "Invalid input. Please enter a number within the specified range." << std::endl;
-                //TODO: change it for a proper feedback
             }
         }
         else {

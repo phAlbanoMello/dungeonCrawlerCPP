@@ -25,7 +25,7 @@ void GameState::AddDefeatedEnemy(Sizes size)
 /// </summary>
 /// <param name="size">Will return the total amount of defeated enemies if 'None' is passed</param>
 /// <returns></returns>
-int GameState::GetAmountOfDefeatedEnemiesBySize(Sizes size)
+int GameState::GetAmountOfDefeatedEnemiesBySize(Sizes size) const
 {
 	switch (size)
 	{
@@ -42,4 +42,9 @@ int GameState::GetAmountOfDefeatedEnemiesBySize(Sizes size)
 		return TotalEnemiesDefeated;
 		break;
 	}
+}
+
+int GameState::GetTotalEnemiesDefeatedAmount() const
+{
+	return TotalEnemiesDefeated;
 }

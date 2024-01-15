@@ -1,31 +1,16 @@
 #include "Enemy.h"
-#include <string>
-#include <algorithm>
 
-Enemy::Enemy(std::string name, int h, int d, Sizes s)
-	: Name(name), health(h), damage(d), size(s) {
+Enemy::Enemy(std::string name, int health, int damage, int speed) : Battler(name, health, damage, speed)
+{
+	size = None;
 }
 
-int Enemy::GetHealth()
-{
-	return health;
-}
-int Enemy::GetDamage()
-{
-	return damage;
-}
-Sizes Enemy::GetSize()
+Sizes Enemy::GetSize() const
 {
 	return size;
 }
-std::string Enemy::GetName()
+
+void Enemy::SetSize(Sizes enemySize)
 {
-	return Name;
+	size = enemySize;
 }
-
-void Enemy::TakeDamage(int damage)
-{
-	health = (health - damage < 0) ? 0 : health - damage;
-}
-
-

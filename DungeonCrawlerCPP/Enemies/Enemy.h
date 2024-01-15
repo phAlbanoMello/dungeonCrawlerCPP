@@ -1,25 +1,20 @@
 #pragma once
 #include <string>
-#include "Sizes.h"
+#include "../Enums/Sizes.h"
+#include "../Battler.h"
 
-class Enemy
+class Enemy : public Battler
 {
+    private:
+        Sizes size = None;
 
-private:
-    std::string Name = "";
-    int health = 0;
-    int damage = 0;
-    Sizes size = Small;
-
-public:
-    
-    Enemy(std::string name, int h, int d, Sizes s);
-
-    int GetHealth();
-    int GetDamage();
-    Sizes GetSize();
-    std::string GetName();
-    void TakeDamage(int damage);
+	public:
+        Enemy(std::string name, int health, int damage, int speed);
+        Sizes GetSize() const;
+        void SetSize(Sizes enemySize);
+        bool operator==(const Battler& other) const override {
+              return dynamic_cast<const Enemy*>(&other) != nullptr;
+        }
 };
 
 

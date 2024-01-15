@@ -5,9 +5,13 @@ std::string EnemiesManager::GetEnemyNamesFilePath() {
     return ENEMY_NAMES_FILE;
 }
 
-std::vector<Enemy> EnemiesManager::GetEnemies()
+const std::vector<Enemy>& EnemiesManager::GetEnemies() const
 {
     return Enemies;
+}
+
+EnemiesManager::EnemiesManager()
+{
 }
 
 int EnemiesManager::GetRandomInteger(int minRange, int maxRange, bool isMultipleOfTen) {
@@ -38,10 +42,11 @@ void EnemiesManager::LoadEnemies(std::vector<std::string>& enemyNames, int enemi
     for (const auto& name : selectedEnemies) {
         int health = GetRandomInteger(EnemyMinHealth, EnemyMaxHealth, true);
         int damage = GetRandomInteger(EnemyMinDamage, EnemyMaxDamage);
-
+        int speed = GetRandomInteger(1, 100);
         Sizes size = DetermineEnemyTier(health, damage);
 
-        Enemy enemy = Enemy(name, health, damage, size);
+        Enemy enemy = Enemy(name, health, damage, speed);
+        enemy.SetSize(size);
         Enemies.push_back(enemy);
     }
 }

@@ -128,6 +128,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Battler.cpp" />
     <ClCompile Include="Enemies\EnemiesManager.cpp" />
     <ClCompile Include="Services\GameState.cpp" />
     <ClCompile Include="Services\CursorService.cpp" />
@@ -139,6 +140,7 @@
     <ClCompile Include="Player\Character.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Battler.h" />
     <ClInclude Include="Enemies\EnemiesManager.h" />
     <ClInclude Include="Services\GameState.h" />
     <ClInclude Include="Main\DungeonCrawlerCPP.h" />

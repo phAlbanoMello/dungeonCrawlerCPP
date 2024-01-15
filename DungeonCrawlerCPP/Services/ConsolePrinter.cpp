@@ -20,11 +20,9 @@ void ConsolePrinter::JumpLines(int linesToJump) {
     }
 }
 
-void ConsolePrinter::SeparatedSpace(int size) {
+void ConsolePrinter::PrintBorder(int size) {
     for (size_t i = 0; i < size; i++)
     {
-        std::cout << std::endl;
         std::cout << "---------------------------------------------------" << std::endl;
-        std::cout << std::endl;
     }
 }
