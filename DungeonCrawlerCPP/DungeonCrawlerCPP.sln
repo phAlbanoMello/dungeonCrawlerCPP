@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34309.116
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DungeonCrawlerCPP", "DungeonCrawlerCPP.vcxproj", "{1A34F777-B582-4A29-8A7F-46B5EB9B14A7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1A34F777-B582-4A29-8A7F-46B5EB9B14A7}.Debug|x64.ActiveCfg = Debug|x64
+		{1A34F777-B582-4A29-8A7F-46B5EB9B14A7}.Debug|x64.Build.0 = Debug|x64
+		{1A34F777-B582-4A29-8A7F-46B5EB9B14A7}.Debug|x86.ActiveCfg = Debug|Win32
+		{1A34F777-B582-4A29-8A7F-46B5EB9B14A7}.Debug|x86.Build.0 = Debug|Win32
+		{1A34F777-B582-4A29-8A7F-46B5EB9B14A7}.Release|x64.ActiveCfg = Release|x64
+		{1A34F777-B582-4A29-8A7F-46B5EB9B14A7}.Release|x64.Build.0 = Release|x64
+		{1A34F777-B582-4A29-8A7F-46B5EB9B14A7}.Release|x86.ActiveCfg = Release|Win32
+		{1A34F777-B582-4A29-8A7F-46B5EB9B14A7}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E175EC29-28D3-42FA-924B-02C189D2BF44}
+	EndGlobalSection
+EndGlobal
