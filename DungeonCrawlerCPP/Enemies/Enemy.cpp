@@ -1,6 +1,6 @@
 #include "Enemy.h"
 
-Enemy::Enemy(std::string name, int health, int damage, int speed) : Battler(name, health, damage, speed)
+Enemy::Enemy(std::string name, int health, std::tuple<int,int> damageRange, int speed)
 {
 	size = None;
 }

@@ -45,9 +45,31 @@ void EnemiesManager::LoadEnemies(std::vector<std::string>& enemyNames, int enemi
         int speed = GetRandomInteger(1, 100);
         Sizes size = DetermineEnemyTier(health, damage);
 
+        CountEnemyBySize(size);
+
         Enemy enemy = Enemy(name, health, damage, speed);
         enemy.SetSize(size);
         Enemies.push_back(enemy);
+    }
+}
+
+void EnemiesManager::CountEnemyBySize(Sizes size)
+{
+    switch (size)
+    {
+    case None:
+        break;
+    case Big:
+        AddBigEnemyCount();
+        break;
+    case Medium:
+        AddMediumEnemyCount();
+        break;
+    case Small:
+        AddSmallEnemyCount();
+        break;
+    default:
+        break;
     }
 }
 
@@ -102,5 +124,37 @@ std::string EnemiesManager::GetSizeString(Enemy& enemy){
         return "Small";
     default:
         return "Unknown";
+    }
+}
+
+void EnemiesManager::AddSmallEnemyCount()
+{
+    TotalSmallEnemies++;
+}
+
+void EnemiesManager::AddMediumEnemyCount()
+{
+    TotalMediumEnemies++;
+}
+
+void EnemiesManager::AddBigEnemyCount()
+{
+    TotalBigEnemies++;
+}
+
+int EnemiesManager::GetTotalEnemiesOfSize(Sizes size) const
+{
+    switch (size)
+    {
+    case None:
+        break;
+    case Big:
+        return TotalBigEnemies;
+    case Medium:
+        return TotalMediumEnemies;
+    case Small:
+        return TotalSmallEnemies;
+    default:
+        break;
     }
 }

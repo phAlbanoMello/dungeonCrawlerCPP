@@ -31,8 +31,9 @@ int main()
 	ConsolePrinter::Print("Enter your name, tarnished");
 
 	std::string playerName = InputValidator::GetValidStringInput();
+	std::tuple<int, int> playerDamageRange = { 5, 30 };
+	Character player = Character(playerName, 100, playerDamageRange, 50);
 
-	Character player = Character(playerName, 100, 20, 50);
 	ConsolePrinter::PrintBorder();
 	ConsolePrinter::Print(playerName + ", you're here to prove your strenght. But you can choose how far you'll go.");
 	ConsolePrinter::Print("How many enemies you're facing now? You must face at least " +
@@ -82,7 +83,7 @@ int main()
 
 		if (gameState.GetTotalEnemiesDefeatedAmount() == enemiesCount)
 		{
-			//TODO: - Count amount of each enemy size on the list
+			//TODO: 
 			// - Randomize damage
 			// - Reafactor Size picking to take speed
 			// - Highlight enemy speciality on enemy status
@@ -91,16 +92,31 @@ int main()
 
 			ConsolePrinter::Print("You've defeated all enemies!!");
 			ConsolePrinter::PrintBorder(3);
-			ConsolePrinter::Print("Total Enemies defeated : " + std::to_string(gameState.GetTotalEnemiesDefeatedAmount()));
-			ConsolePrinter::Print("Big : " + std::to_string(gameState.GetAmountOfDefeatedEnemiesBySize(Big)));
-			ConsolePrinter::Print("Medium : " + std::to_string(gameState.GetAmountOfDefeatedEnemiesBySize(Medium)));
-			ConsolePrinter::Print("Small : " + std::to_string(gameState.GetAmountOfDefeatedEnemiesBySize(Small)));
+
+			PrintEndGameStatistics(gameState, enemiesManager);
+
 			break;
 		}
 		ConsolePrinter::Print("Get ready for the next enemy!");
 		ConsolePrinter::PrintBorder();
 		++enemyIndex;
 	}
+}
+
+void PrintEndGameStatistics(GameState& gameState, EnemiesManager& enemiesManager)
+{
+	std::string totalEnemiesDefeated = std::to_string(gameState.GetTotalEnemiesDefeatedAmount());
+	std::string bigEnemiesDefeated = std::to_string(gameState.GetAmountOfDefeatedEnemiesBySize(Big));
+	std::string mediumEnemiesDefeated = std::to_string(gameState.GetAmountOfDefeatedEnemiesBySize(Medium));
+	std::string smallEnemiesDefeated = std::to_string(gameState.GetAmountOfDefeatedEnemiesBySize(Small));
+	std::string totalBigEnemies = std::to_string(enemiesManager.GetTotalEnemiesOfSize(Big));
+	std::string totalMediumEnemies = std::to_string(enemiesManager.GetTotalEnemiesOfSize(Medium));
+	std::string totalSmallEnemies = std::to_string(enemiesManager.GetTotalEnemiesOfSize(Small));
+
+	ConsolePrinter::Print("Total Enemies defeated : " + totalEnemiesDefeated);
+	ConsolePrinter::Print("Big : " + bigEnemiesDefeated + "/" + totalBigEnemies);
+	ConsolePrinter::Print("Medium : " + mediumEnemiesDefeated + "/" + totalMediumEnemies);
+	ConsolePrinter::Print("Small : " + smallEnemiesDefeated + "/" + totalSmallEnemies);
 }
 
 void PrintPlayerStats(Character& player)

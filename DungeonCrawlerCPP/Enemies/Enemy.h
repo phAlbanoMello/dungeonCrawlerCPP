@@ -9,7 +9,7 @@ class Enemy : public Battler
         Sizes size = None;
 
 	public:
-        Enemy(std::string name, int health, int damage, int speed);
+        Enemy(std::string name, int health, std::tuple<int, int> damageRange, int speed);
         Sizes GetSize() const;
         void SetSize(Sizes enemySize);
         bool operator==(const Battler& other) const override {

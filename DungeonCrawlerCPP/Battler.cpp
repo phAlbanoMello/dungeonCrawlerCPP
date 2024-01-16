@@ -5,7 +5,14 @@ Battler::Battler()
 {
 }
 
-Battler::Battler(std::string name, int health, int damage, int speed) : Name(name), Health(health), Damage(damage), Speed(speed){}
+Battler::Battler(std::string name, int health, std::tuple<int, int> damageRange, int speed)
+{
+	Name = name;
+	Health = health;
+	MinDamage = std::get<0>(damageRange);
+	MaxDamage = std::get<1>(damageRange);
+	Speed = speed;
+}
 
 std::string Battler::GetName()
 {

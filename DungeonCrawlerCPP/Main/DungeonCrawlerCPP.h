@@ -9,3 +9,5 @@ void PrintHealthBar(int hp);
 Battler& Battle(Battler& battlerA, Battler& battlerB);
 
 void PrintPlayerStats(Character& player);
+
+void PrintEndGameStatistics(GameState& gameState, EnemiesManager& enemiesManager);
