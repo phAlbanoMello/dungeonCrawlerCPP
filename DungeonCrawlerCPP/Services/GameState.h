@@ -1,12 +1,14 @@
 #pragma once
 #include "../Enums/Sizes.h"
+#include "../Enemies/EnemiesManager.h"
 
 class GameState
 {
 public:
-	void AddDefeatedEnemy(Sizes size);
-	int GetAmountOfDefeatedEnemiesBySize(Sizes size) const;
+	void AddDefeatedEnemy(Tiers size);
+	int GetAmountOfDefeatedEnemiesBySize(Tiers size) const;
 	int GetTotalEnemiesDefeatedAmount() const;
+	void PrintEndGameStatistics(EnemiesManager& enemiesManager) const;
 private:
 	int TotalEnemiesDefeated = 0;
 	int SmallEnemiesDefeated = 0;

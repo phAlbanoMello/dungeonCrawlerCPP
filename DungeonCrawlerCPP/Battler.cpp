@@ -14,7 +14,7 @@ Battler::Battler(std::string name, int health, std::tuple<int, int> damageRange,
 	Speed = speed;
 }
 
-std::string Battler::GetName()
+std::string& Battler::GetName()
 {
 	return Name;
 }
@@ -29,9 +29,13 @@ int Battler::GetHealth() const
 	return Health;
 }
 
-int Battler::GetDamage() const
+int Battler::GetMaxDamage() const
 {
-	return Damage;
+	return MaxDamage;
+}
+int Battler::GetMinDamage() const
+{
+	return MinDamage;
 }
 
 int Battler::GetSpeed() const

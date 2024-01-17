@@ -12,13 +12,14 @@ private:
 	int Speed = 1;
 public:
 	Battler();
-	Battler(std::string name = "Nameless", int health, std::tuple<int,int> damageRange, int speed);
+	Battler(std::string name, int health, std::tuple<int,int> damageRange, int speed);
 
-	std::string GetName();
+	std::string& GetName();
 	void TakeDamage(int damage);
 	int GetHealth() const;
-	int GetDamage() const;
 	int GetSpeed() const;
+	int GetMaxDamage() const;
+	int GetMinDamage() const;
 	
 	virtual bool operator==(const Battler& other) const {
 		return true; 

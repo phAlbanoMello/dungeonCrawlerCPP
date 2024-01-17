@@ -1,8 +1,8 @@
 #pragma once
 
-enum Sizes {
+enum Tiers {
 	None,
-	Big,
-	Medium,
-	Small
+	Dangerous,
+	Balanced,
+	Weak
 };

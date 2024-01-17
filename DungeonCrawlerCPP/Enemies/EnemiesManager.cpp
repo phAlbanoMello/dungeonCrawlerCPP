@@ -1,5 +1,5 @@
 #include "EnemiesManager.h"
-#include <random>
+#include "../RandomService.h"
 
 std::string EnemiesManager::GetEnemyNamesFilePath() {
     return ENEMY_NAMES_FILE;
@@ -14,146 +14,87 @@ EnemiesManager::EnemiesManager()
 {
 }
 
-int EnemiesManager::GetRandomInteger(int minRange, int maxRange, bool isMultipleOfTen) {
-    if (minRange >= maxRange) {
-        minRange = maxRange - 1;
-    }
-
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<int> distribution(minRange, maxRange);
-
-    int randomNumber = distribution(gen);
-
-    if (isMultipleOfTen) {
-        return (randomNumber / 10) * 10;
-    }
-    else {
-        return randomNumber;
-    }
-
-    return randomNumber;
-}
-
 void EnemiesManager::LoadEnemies(std::vector<std::string>& enemyNames, int enemiesCount)
 {
-    std::vector<std::string> selectedEnemies = GetRandomStrings(enemyNames, enemiesCount);
+    std::vector<std::string> selectedEnemies = RandomService::GetRandomStrings(enemyNames, enemiesCount);
 
     for (const auto& name : selectedEnemies) {
-        int health = GetRandomInteger(EnemyMinHealth, EnemyMaxHealth, true);
-        int damage = GetRandomInteger(EnemyMinDamage, EnemyMaxDamage);
-        int speed = GetRandomInteger(1, 100);
-        Sizes size = DetermineEnemyTier(health, damage);
+        int health = RandomService::GetRandomInteger(EnemyMinHealth, EnemyMaxHealth, true);
+        int speed = RandomService::GetRandomInteger(1, 51);
+        Tiers size = DetermineEnemyTier(health, speed);
 
-        CountEnemyBySize(size);
-
-        Enemy enemy = Enemy(name, health, damage, speed);
+        CountEnemyByTier(size);
+        
+        Enemy enemy = Enemy(name, health, { EnemyMinDamage, EnemyMaxDamage }, speed);
         enemy.SetSize(size);
         Enemies.push_back(enemy);
     }
 }
 
-void EnemiesManager::CountEnemyBySize(Sizes size)
+void EnemiesManager::CountEnemyByTier(Tiers size)
 {
     switch (size)
     {
     case None:
         break;
-    case Big:
-        AddBigEnemyCount();
+    case Dangerous:
+        AddDangerousEnemyCount();
         break;
-    case Medium:
-        AddMediumEnemyCount();
+    case Balanced:
+        AddBalancedEnemyCount();
         break;
-    case Small:
-        AddSmallEnemyCount();
+    case Weak:
+        AddWeakEnemyCount();
         break;
     default:
         break;
     }
 }
 
-Sizes EnemiesManager::DetermineEnemyTier(int health, int damage) {
-    int combinedValue = (health + damage) / 2;
+Tiers EnemiesManager::DetermineEnemyTier(int health, int speed) {
+    int combinedValue = (health + speed) / 2;
 
-    const double smallTierPercentile = 25.0;
-    const double mediumTierPercentile = 75.0;
-
-    double smallTierThreshold = combinedValue * (smallTierPercentile / 100.0);
-    double mediumTierThreshold = combinedValue * (mediumTierPercentile / 100.0);
-
-    if (combinedValue <= smallTierThreshold) {
-        return Small;
+    if (combinedValue < (EnemyMinHealth + EnemyMaxHealth) / 3)
+    {
+        return Weak;
     }
-    else if (combinedValue <= mediumTierThreshold) {
-        return Medium;
+    else if (combinedValue > (EnemyMinHealth + EnemyMaxHealth) * 2 / 3)
+    {
+        return Dangerous;
     }
-    else {
-        return Big;
+    else
+    {
+        return Balanced;
     }
 }
 
-std::vector<std::string> EnemiesManager::GetRandomStrings(const std::vector<std::string>& stringCollection, size_t amount) {
-    if (stringCollection.empty() || amount == 0) {
-        return {};
-    }
-
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<size_t> distribution(0, stringCollection.size() - 1);
-
-    std::vector<std::string> result;
-
-    for (size_t i = 0; i < amount; ++i) {
-        size_t randomIndex = distribution(gen);
-        result.push_back(stringCollection[randomIndex]);
-    }
-
-    return result;
-}
-
-std::string EnemiesManager::GetSizeString(Enemy& enemy){
-    switch (enemy.GetSize()) {
-    case None:
-        return "Unknown";
-    case Big:
-        return "Big";
-    case Medium:
-        return "Medium";
-    case Small:
-        return "Small";
-    default:
-        return "Unknown";
-    }
-}
-
-void EnemiesManager::AddSmallEnemyCount()
+void EnemiesManager::AddWeakEnemyCount()
 {
-    TotalSmallEnemies++;
+    TotalWeakEnemies++;
 }
 
-void EnemiesManager::AddMediumEnemyCount()
+void EnemiesManager::AddBalancedEnemyCount()
 {
-    TotalMediumEnemies++;
+    TotalBalancedEnemies++;
 }
 
-void EnemiesManager::AddBigEnemyCount()
+void EnemiesManager::AddDangerousEnemyCount()
 {
-    TotalBigEnemies++;
+    TotalDangerousEnemies++;
 }
 
-int EnemiesManager::GetTotalEnemiesOfSize(Sizes size) const
+int EnemiesManager::GetTotalEnemiesOfTier(Tiers size) const
 {
     switch (size)
     {
     case None:
         break;
-    case Big:
-        return TotalBigEnemies;
-    case Medium:
-        return TotalMediumEnemies;
-    case Small:
-        return TotalSmallEnemies;
+    case Dangerous:
+        return TotalDangerousEnemies;
+    case Balanced:
+        return TotalBalancedEnemies;
+    case Weak:
+        return TotalWeakEnemies;
     default:
         break;
     }

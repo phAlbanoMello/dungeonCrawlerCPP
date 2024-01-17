@@ -16,14 +16,21 @@
 
 #include "DungeonCrawlerCPP.h"
 #include "../Battler.h"
+#include "../RandomService.h"
+#include "../BattleManager.h"
 
 
 int main()
 {
-	//Initialize enemies list
+	Play();
+}
+
+void Play()
+{
 	EnemiesManager enemiesManager = EnemiesManager();
 	GameState gameState = GameState();
 	CursorService cursorService = CursorService();
+	BattleManager battleManager = BattleManager();
 
 	std::string enemyNamesFilePath = enemiesManager.GetEnemyNamesFilePath();
 	std::vector<std::string> enemyNames = ReadNamesFromFile(enemyNamesFilePath);
@@ -31,8 +38,8 @@ int main()
 	ConsolePrinter::Print("Enter your name, tarnished");
 
 	std::string playerName = InputValidator::GetValidStringInput();
-	std::tuple<int, int> playerDamageRange = { 5, 30 };
-	Character player = Character(playerName, 100, playerDamageRange, 50);
+
+	Character player = Character(playerName, 100, { 10, 50 }, 50);
 
 	ConsolePrinter::PrintBorder();
 	ConsolePrinter::Print(playerName + ", you're here to prove your strenght. But you can choose how far you'll go.");
@@ -52,19 +59,17 @@ int main()
 
 	while (gameState.GetTotalEnemiesDefeatedAmount() < enemiesCount && enemyIndex < enemies.size()) {
 		Enemy enemy = enemiesManager.GetEnemies()[enemyIndex];
-		PrintPlayerStats(player);
+		battleManager.PrintPlayerData(player);
 		ConsolePrinter::PrintBorder();
 		ConsolePrinter::Print("Enemy number " + std::to_string(enemyIndex + 1) + " is...");
 		ConsolePrinter::PrintBorder();
-		ConsolePrinter::Print("Name : " + enemy.GetName());
-		PrintHealthBar(enemy.GetHealth());
-		ConsolePrinter::Print("Size : " + enemiesManager.GetSizeString(enemy));
+		battleManager.PrintEnemyData(enemy);
 		ConsolePrinter::PrintBorder();
 		ConsolePrinter::Print("Press any key to fight");
 		_getch();
 
 		ConsolePrinter::PrintBorder();
-		Battler& winner = Battle(player, enemy);
+		Battler& winner = battleManager.Battle(player, enemy);
 		ConsolePrinter::PrintBorder();
 
 		if (winner == player)
@@ -77,23 +82,18 @@ int main()
 		else
 		{
 			ConsolePrinter::Print("You died");
-			ConsolePrinter::Print("Try Again? (Y/N)");
 			break;
 		}
 
 		if (gameState.GetTotalEnemiesDefeatedAmount() == enemiesCount)
 		{
 			//TODO: 
-			// - Randomize damage
-			// - Reafactor Size picking to take speed
-			// - Highlight enemy speciality on enemy status
 			// - Get player input so it can choose to either start again or quit
-			// - All enemies are coming big????
 
 			ConsolePrinter::Print("You've defeated all enemies!!");
 			ConsolePrinter::PrintBorder(3);
 
-			PrintEndGameStatistics(gameState, enemiesManager);
+			gameState.PrintEndGameStatistics(enemiesManager);
 
 			break;
 		}
@@ -103,79 +103,6 @@ int main()
 	}
 }
 
-void PrintEndGameStatistics(GameState& gameState, EnemiesManager& enemiesManager)
-{
-	std::string totalEnemiesDefeated = std::to_string(gameState.GetTotalEnemiesDefeatedAmount());
-	std::string bigEnemiesDefeated = std::to_string(gameState.GetAmountOfDefeatedEnemiesBySize(Big));
-	std::string mediumEnemiesDefeated = std::to_string(gameState.GetAmountOfDefeatedEnemiesBySize(Medium));
-	std::string smallEnemiesDefeated = std::to_string(gameState.GetAmountOfDefeatedEnemiesBySize(Small));
-	std::string totalBigEnemies = std::to_string(enemiesManager.GetTotalEnemiesOfSize(Big));
-	std::string totalMediumEnemies = std::to_string(enemiesManager.GetTotalEnemiesOfSize(Medium));
-	std::string totalSmallEnemies = std::to_string(enemiesManager.GetTotalEnemiesOfSize(Small));
-
-	ConsolePrinter::Print("Total Enemies defeated : " + totalEnemiesDefeated);
-	ConsolePrinter::Print("Big : " + bigEnemiesDefeated + "/" + totalBigEnemies);
-	ConsolePrinter::Print("Medium : " + mediumEnemiesDefeated + "/" + totalMediumEnemies);
-	ConsolePrinter::Print("Small : " + smallEnemiesDefeated + "/" + totalSmallEnemies);
-}
-
-void PrintPlayerStats(Character& player)
-{
-	ConsolePrinter::Print("Name : " + player.GetName());
-	PrintHealthBar(player.GetHealth());
-	ConsolePrinter::Print("Speed : " + std::to_string(player.GetSpeed()));
-}
 
 
 
-Battler& Battle(Battler& battlerA, Battler& battlerB) {
-	//Speed check
-
-	Battler& first = (battlerA.GetSpeed() > battlerB.GetSpeed()) ? battlerA : battlerB;
-	Battler& second = (battlerA.GetSpeed() > battlerB.GetSpeed()) ? battlerB : battlerA;
-
-	while (battlerA.GetHealth() > 0 && battlerB.GetHealth() > 0) {
-		second.TakeDamage(first.GetDamage());
-		PrintDamageFeedback(first, second);
-		if (second.GetHealth() == 0)
-		{
-			PrintDeathFeedback(second);
-			break;
-		}
-		first.TakeDamage(second.GetDamage());
-		PrintDamageFeedback(second, first);
-	}
-
-	if (first.GetHealth() == 0)
-	{
-		return second;
-	}
-	else {
-		return first;
-	}
-}
-
-void PrintDeathFeedback(Battler& defeatedBattler)
-{
-	ConsolePrinter::PrintBorder();
-	ConsolePrinter::Print(defeatedBattler.GetName() + " was defeated!");
-	ConsolePrinter::PrintBorder();
-}
-
-void PrintDamageFeedback(Battler& damageDealer, Battler& damageTaker)
-{
-	ConsolePrinter::Print(damageDealer.GetName() + " attacked " + damageTaker.GetName() + " dealing " + std::to_string(damageDealer.GetDamage()) + " damage.");
-	ConsolePrinter::Print(std::to_string(damageDealer.GetHealth()) + " " + std::to_string(damageTaker.GetHealth()));
-	ConsolePrinter::PrintBorder();
-}
-
-void PrintHealthBar(int hp) {
-	std::string hpBar = "";
-	
-	for (size_t i = 0; i < hp; i++)
-	{
-		hpBar += "|";
-	}
-
-	ConsolePrinter::Print("HP : " + hpBar);
-}

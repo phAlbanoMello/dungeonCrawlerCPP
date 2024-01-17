@@ -6,12 +6,13 @@
 class Enemy : public Battler
 {
     private:
-        Sizes size = None;
+        Tiers size = None;
 
 	public:
         Enemy(std::string name, int health, std::tuple<int, int> damageRange, int speed);
-        Sizes GetSize() const;
-        void SetSize(Sizes enemySize);
+        Tiers GetSize() const;
+        void SetSize(Tiers enemySize);
+        std::string GetTierString();
         bool operator==(const Battler& other) const override {
               return dynamic_cast<const Enemy*>(&other) != nullptr;
         }

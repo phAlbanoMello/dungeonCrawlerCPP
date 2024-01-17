@@ -1,13 +1,7 @@
 #pragma once
 
-void PrintDamageFeedback(Battler& first, Battler& second);
+class DungeonCrawlerCPP {
+};
 
-void PrintDeathFeedback(Battler& second);
-
-void PrintHealthBar(int hp);
-
-Battler& Battle(Battler& battlerA, Battler& battlerB);
-
-void PrintPlayerStats(Character& player);
-
-void PrintEndGameStatistics(GameState& gameState, EnemiesManager& enemiesManager);
+void Play();
+static void clearConsole();
